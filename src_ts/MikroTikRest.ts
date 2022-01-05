@@ -47,7 +47,7 @@ class MikroTikRest {
 
             const response = await fetch(`https://${this.addr}/rest/interface/monitor-traffic`, {
                 method: 'POST',
-                body: JSON.stringify({ "interface": interfaces, "duration":"5s" , "once": "" }), // string or object
+                body: JSON.stringify({ "interface": interfaces, "duration":"330s" , "once": "" }), // string or object
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Basic ' + Buffer.from(`${this.user}:${this.passwd}`).toString('base64')
