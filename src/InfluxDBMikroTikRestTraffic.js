@@ -4,12 +4,10 @@ exports.InfluxDBMikroTikRestTrafficImpl = void 0;
 class InfluxDBMikroTikRestTrafficImpl {
     static getInfluxDB(data, device) {
         const influxElement = {
-            measurement: "MikroTikRestTraffic",
+            measurement: `MikroTikRestTraffic_${device}-${data.name}`,
             fields: {
                 rxMBitsPerSec: data.rxBitsPerSec / 1000000,
-                txMBitsPerSec: data.txBitsPerSec / 1000000,
-                interface: data.name,
-                device: device
+                txMBitsPerSec: data.txBitsPerSec / 1000000
             }
         };
         return influxElement;
