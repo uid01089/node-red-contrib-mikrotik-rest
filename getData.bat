@@ -1,0 +1,1 @@
+curl -k -u admin:95309530 -X POST 'https://10.10.30.1/rest/interface/monitor-traffic'   --data '{"duration":"2s"}' -H "content-type: application/json"

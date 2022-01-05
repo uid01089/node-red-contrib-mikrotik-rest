@@ -1,0 +1,60 @@
+<!--See https://nodered.org/docs/creating-nodes/node-html-->
+
+<script type="text/javascript">
+    RED.nodes.registerType('mikrotik-rest', {
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            name: { value: "" },
+            addr: { value: "" },
+            passwd: { value: "" },
+            user:  { value: "" },
+            interfaces:  { value: "" },
+
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "file.png",
+        label: function () {
+            return this.name || "mikrotik-rest";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="mikrotik-rest">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-user"><i class="fa fa-tag"></i> user</label>
+        <input type="text" id="node-input-user" placeholder="user">
+    </div>    
+    <div class="form-row">
+        <label for="node-input-passwd"><i class="fa fa-tag"></i> passwd</label>
+        <input type="text" id="node-input-passwd" placeholder="passwd">
+    </div>
+    <div class="form-row">
+        <label for="node-input-interfaces"><i class="fa fa-tag"></i> interfaces</label>
+        <input type="text" id="node-input-interfaces" placeholder="interfaces">
+    </div>
+
+</script>
+
+<script type="text/html" data-help-name="mikrotik-rest">
+    <p>
+        It reads out the traffic of the given interfaces (comma separated)
+        <br>
+        
+        
+    </p>
+    <h3>Outputs</h3>
+     <ol class="node-ports">
+        <li>InfluxDb
+             <dl class="message-properties">
+                 <dt>Payload <span class="property-type">string</span></dt>
+                 <dd>the standard output of the command.</dd>
+             </dl>
+         </li>
+     </ol>
+</script>
