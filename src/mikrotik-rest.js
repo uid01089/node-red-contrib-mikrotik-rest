@@ -11,13 +11,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const InfluxDBMikroTikRestTraffic_1 = require("./InfluxDBMikroTikRestTraffic");
 const MikroTikRest_1 = require("./MikroTikRest");
+const MikrotikTrafficIntegrator_1 = require("./MikrotikTrafficIntegrator");
 const func = (RED) => {
     const mikrotikRest = function (config) {
         this.name = config.name;
         this.user = config.user;
         this.passwd = config.passwd;
         this.interfaces = config.interfaces;
+        this.interval = config.interval;
         this.mikrotikRest = new MikroTikRest_1.MikroTikRest(this.name, this.user, this.passwd);
+        this.mikrotikTrafficIntegrator = new MikrotikTrafficIntegrator_1.MikrotikTrafficIntegrator(parseInt(this.interval));
         const node = this;
         RED.nodes.createNode(node, config);
         /**
@@ -31,10 +34,14 @@ const func = (RED) => {
                 // fallback to using `node.send`
                 send = send || function () { node.send.apply(node, arguments); };
                 const mikrotikRest = (node.mikrotikRest);
+                const mikrotikTrafficIntegrator = (node.mikrotikTrafficIntegrator);
                 const message = [];
                 const traffics = yield mikrotikRest.readTraffic(node.interfaces);
                 traffics.forEach(traffic => {
-                    message.push(InfluxDBMikroTikRestTraffic_1.InfluxDBMikroTikRestTrafficImpl.getInfluxDB(traffic, node.name));
+                    const integratedTraffic = mikrotikTrafficIntegrator.push(traffic);
+                    if (null != integratedTraffic) {
+                        message.push(InfluxDBMikroTikRestTraffic_1.InfluxDBMikroTikRestTrafficImpl.getInfluxDB(integratedTraffic, node.name));
+                    }
                 });
                 send([
                     { payload: message }

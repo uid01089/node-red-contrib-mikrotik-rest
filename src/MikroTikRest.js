@@ -37,7 +37,7 @@ class MikroTikRest {
                 let mikrotikTraffics = [];
                 const response = yield fetch(`https://${this.addr}/rest/interface/monitor-traffic`, {
                     method: 'POST',
-                    body: JSON.stringify({ "interface": interfaces, "duration": "330s", "once": "" }),
+                    body: JSON.stringify({ "interface": interfaces, "once": "" }),
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': 'Basic ' + Buffer.from(`${this.user}:${this.passwd}`).toString('base64')
