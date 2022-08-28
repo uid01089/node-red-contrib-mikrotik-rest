@@ -1,6 +1,7 @@
 import "node-fetch"
 import { InfluxDBBatchElement } from "./InfluxDBBatchElement";
 import { MikrotikTraffic } from "./MikrotikTraffic";
+import { MikrotikUsers } from "./MikrotikUsers";
 
 const fetch = require("node-fetch");
 
@@ -43,7 +44,7 @@ class MikroTikRest {
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         try {
 
-            let mikrotikTraffics: MikrotikTraffic[] = [];
+            const mikrotikTraffics: MikrotikTraffic[] = [];
 
             const response = await fetch(`https://${this.addr}/rest/interface/monitor-traffic`, {
                 method: 'POST',
@@ -71,7 +72,6 @@ class MikroTikRest {
             console.error(e);
         }
     }
-
 
 }
 

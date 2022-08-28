@@ -19,6 +19,7 @@
   "license": "Apache-2.0 License",
   "dependencies": {
     "@types/node-fetch": "^2.5.7",
+    "console.table": "^0.10.0",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
