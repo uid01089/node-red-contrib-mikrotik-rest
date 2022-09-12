@@ -34,7 +34,7 @@ class MikroTikRest {
         return __awaiter(this, void 0, void 0, function* () {
             process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
             try {
-                let mikrotikTraffics = [];
+                const mikrotikTraffics = [];
                 const response = yield fetch(`https://${this.addr}/rest/interface/monitor-traffic`, {
                     method: 'POST',
                     body: JSON.stringify({ "interface": interfaces, "once": "" }),

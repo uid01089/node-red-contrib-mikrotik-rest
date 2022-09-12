@@ -18,9 +18,10 @@ class MikrotikTrafficIntegrator {
 
         let result: MikrotikTraffic = null;
 
-        const existingTraffic = this.data.get(traffic.name);
+        let existingTraffic = this.data.get(traffic.name);
         if (undefined === existingTraffic) {
-            this.data.set(traffic.name, { name: traffic.name, rxBitsPerSec: traffic.rxBitsPerSec, txBitsPerSec: traffic.txBitsPerSec, ctr: 1 });
+            existingTraffic = { name: traffic.name, rxBitsPerSec: traffic.rxBitsPerSec, txBitsPerSec: traffic.txBitsPerSec, ctr: 1 };
+            this.data.set(traffic.name, existingTraffic);
         } else {
             existingTraffic.rxBitsPerSec += traffic.rxBitsPerSec;
             existingTraffic.txBitsPerSec += traffic.txBitsPerSec;
