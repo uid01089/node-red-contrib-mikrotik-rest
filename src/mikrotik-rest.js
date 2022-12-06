@@ -21,6 +21,7 @@ const func = (RED) => {
         this.interval = config.interval;
         this.mikrotikRest = new MikroTikRest_1.MikroTikRest(this.name, this.user, this.passwd);
         this.mikrotikTrafficIntegrator = new MikrotikTrafficIntegrator_1.MikrotikTrafficIntegrator(parseInt(this.interval));
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const node = this;
         RED.nodes.createNode(node, config);
         /**
@@ -29,23 +30,29 @@ const func = (RED) => {
         */
         node.on("input", function (msg, send, done) {
             return __awaiter(this, void 0, void 0, function* () {
-                // For maximum backwards compatibility, check that send exists.
-                // If this node is installed in Node-RED 0.x, it will need to
-                // fallback to using `node.send`
-                send = send || function () { node.send.apply(node, arguments); };
-                const mikrotikRest = (node.mikrotikRest);
-                const mikrotikTrafficIntegrator = (node.mikrotikTrafficIntegrator);
-                const message = [];
-                const traffics = yield mikrotikRest.readTraffic(node.interfaces);
-                traffics.forEach(traffic => {
-                    const integratedTraffic = mikrotikTrafficIntegrator.push(traffic);
-                    if (null != integratedTraffic) {
-                        message.push(InfluxDBMikroTikRestTraffic_1.InfluxDBMikroTikRestTrafficImpl.getInfluxDB(integratedTraffic, node.name));
-                    }
-                });
-                send([
-                    { payload: message }
-                ]);
+                try {
+                    // For maximum backwards compatibility, check that send exists.
+                    // If this node is installed in Node-RED 0.x, it will need to
+                    // fallback to using `node.send`
+                    // eslint-disable-next-line prefer-spread, prefer-rest-params
+                    send = send || function () { node.send.apply(node, arguments); };
+                    const mikrotikRest = (node.mikrotikRest);
+                    const mikrotikTrafficIntegrator = (node.mikrotikTrafficIntegrator);
+                    const message = [];
+                    const traffics = yield mikrotikRest.readTraffic(node.interfaces);
+                    traffics.forEach(traffic => {
+                        const integratedTraffic = mikrotikTrafficIntegrator.push(traffic);
+                        if (null != integratedTraffic) {
+                            message.push(InfluxDBMikroTikRestTraffic_1.InfluxDBMikroTikRestTrafficImpl.getInfluxDB(integratedTraffic, node.name));
+                        }
+                    });
+                    send([
+                        { payload: message }
+                    ]);
+                }
+                catch (e) {
+                    console.error(e);
+                }
                 // Once finished, call 'done'.
                 // This call is wrapped in a check that 'done' exists
                 // so the node will work in earlier versions of Node-RED (<1.0)
